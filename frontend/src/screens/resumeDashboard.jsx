@@ -173,43 +173,67 @@ const Dashboard = () => {
       </>
     ) : null}
   </div>
+  <div style={{ 
+  display: 'flex', 
+  justifyContent: 'flex-end', 
+  marginTop: '0.75rem', 
+  gap: '0.5rem' 
+}}>
+  <Button
+    variant="light"
+    size="sm"
+    style={{
+      border: '1px solid #ced4da',
+      color: '#0d6efd',
+      fontWeight: '500',
+      backgroundColor: '#fff'
+    }}
+    onClick={() => handleEdit(resume)}
+  >
+    <FaEdit style={{ marginRight: '4px' }} />
+    Edit
+  </Button>
 
-  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-    <Button
-      variant="outline-primary"
-      size="sm"
-      className="me-2"
-      onClick={() => handleEdit(resume)}
-    >
-      <FaEdit /> Edit
-    </Button>
-    <Button
-      variant="outline-danger"
-      size="sm"
-      onClick={() => handleDelete(resume._id)}
-    >
-      <FaTrash /> Delete
-    </Button>
+  <Button
+    variant="light"
+    size="sm"
+    style={{
+      border: '1px solid #ced4da',
+      color: '#dc3545',
+      fontWeight: '500',
+      backgroundColor: '#fff'
+    }}
+    onClick={() => handleDelete(resume._id)}
+  >
+    <FaTrash style={{ marginRight: '4px' }} />
+    Delete
+  </Button>
 
-<Button
-  variant="outline-success"
-  size="sm"
-  onClick={() =>
-    navigate(`/users/ResumePreview/${resume._id}`, { state: { formData: resume } })
-  }
->
-  Preview & Download
-</Button>
+  <Button
+    variant="light"
+    size="sm"
+    style={{
+      border: '1px solid #ced4da',
+      color: '#198754',
+      fontWeight: '500',
+      backgroundColor: '#fff'
+    }}
+    onClick={() =>
+      navigate(`/users/ResumePreview/${resume._id}`, {
+        state: { formData: resume }
+      })
+    }
+  >
+    Preview
+  </Button>
+</div>
 
 
-  </div>
 </Card>
-
-
-            </Col>
-          ))
-        )}
-      </Row>
+</Col>
+  ))
+)}
+</Row>
 
       {/* Resume Form Modal */}
       <Modal show={showForm} onHide={handleClose} size="lg">

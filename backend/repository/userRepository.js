@@ -40,7 +40,7 @@ export class UserRepository {
 
   static async editResumeById(resumeId, updatedData){
       const updatedResume = await Resume.findByIdAndUpdate(resumeId, updatedData, {
-        new: true, // return the updated doc
+        new: true, 
         runValidators: true,
       });
       return updatedResume;

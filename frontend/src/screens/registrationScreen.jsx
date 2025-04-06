@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-// import { useDispatch } from "react-redux";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { toast } from 'react-toastify';
 import api from '../axios';
-// import { setCredentials } from "../slices/userAuthSlice";
 import FormContainer from "../components/formContainer";
 
 const RegisterScreen = () => {
@@ -18,9 +16,6 @@ const RegisterScreen = () => {
   const [resendDisabled, setResendDisabled] = useState(true);
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-
-  // Timer for OTP Resend
   useEffect(() => {
     let interval = null;
     if (isOtpSent && resendDisabled) {
@@ -61,19 +56,16 @@ const RegisterScreen = () => {
       } else {
         try {
           const formData = { name, email, password };
-  
-          // API POST request for registration
           await api.post('/users/register', formData);
-          setIsOtpSent(true);  // OTP sent successfully
+          setIsOtpSent(true);  
           setTimer(40);
-          setResendDisabled(true); // Disable resend button
+          setResendDisabled(true); 
         } catch (error) {
           toast.error('Registration failed. Please try again.');
         }
       }
     } else if (isOtpSent && otp.trim() !== '') {
       try {
-        // API POST request for OTP verification
         await api.post('/users/verify-otp', { email, otp });
         toast.success('Registration completed successfully!');
         navigate('/users/Login');
@@ -88,7 +80,6 @@ const RegisterScreen = () => {
 
   const resendOtpHandler = async () => {
     try {
-      // API POST request to resend OTP
       await api.post('/users/resend-otp', { email });
       setTimer(40);
       setResendDisabled(true);

@@ -65,16 +65,16 @@ const ResumeForm = ({ onClose, existingResume }) => {
       };
   
       if (existingResume && existingResume._id) {
-        // If editing, send PUT request
+       
         await api.put(`/users/edit-resumes/${existingResume._id}`, resumeData);
         toast.success('Resume updated successfully!');
       } else {
-        // If creating new, send POST request
+   
         await api.post('/users/create-resumes', resumeData);
         toast.success('Resume created successfully!');
       }
   
-      onClose(); // Close modal and refresh dashboard
+      onClose();
   
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Failed to submit resume.';
@@ -85,7 +85,7 @@ const ResumeForm = ({ onClose, existingResume }) => {
 
   useEffect(() => {
     if (existingResume) {
-      setFormData(existingResume); // <- populate form on modal open
+      setFormData(existingResume); 
     }
   }, [existingResume]);
   

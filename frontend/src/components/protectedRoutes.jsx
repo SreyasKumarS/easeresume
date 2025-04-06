@@ -6,11 +6,11 @@ const ProtectedRoute = ({ children }) => {
   const user = useSelector((state) => state.auth.user);
 
   if (!user) {
-    // Redirect to the login screen if not authenticated
+
     return <Navigate to="/users/Login" replace />;
   }
 
-  // Render the child components if authenticated
+
   return children;
 };
 

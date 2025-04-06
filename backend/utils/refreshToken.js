@@ -9,8 +9,8 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN;
 export const refreshAccessToken = (req, res) => {
   console.log('Entered refresh token function for refreshing access token');
 
-  // Retrieve the refresh token from cookies
-  console.log('Cookies:', req.cookies);  // Log the cookies to see if refreshToken is included
+
+  console.log('Cookies:', req.cookies); 
   const { refreshToken } = req.cookies; 
   console.log( refreshToken,' refreshToken from cookie');
   if (!refreshToken) {

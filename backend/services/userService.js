@@ -15,7 +15,7 @@ export class UserService {
 
             const hashedPassword = await bcrypt.hash(password, 10);
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
-            const otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
+            const otpExpires = Date.now() + 10 * 60 * 1000; 
 
             const newUser = {
                 name,
@@ -51,8 +51,8 @@ export class UserService {
                 throw new Error('Invalid OTP');
             }
 
-            user.otp = null; // Clear OTP after successful verification
-            user.otpExpires = null; // Clear expiry time
+            user.otp = null; 
+            user.otpExpires = null; 
             await UserRepository.update(user);
 
             return 'OTP verified successfully. Registration complete.';
@@ -133,7 +133,7 @@ export class UserService {
 
 
   static async createResume(data) {
-    // Assuming validation is already done in controller
+
     return await UserRepository.createResume(data);
   }
 
@@ -160,7 +160,7 @@ static async sendPasswordResetOtp(email) {
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
+        const otpExpires = Date.now() + 10 * 60 * 1000; 
 
         user.otp = otp;
         user.otpExpires = otpExpires;

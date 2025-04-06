@@ -24,7 +24,7 @@ export const generateRefreshToken = (user, res) => {
       secure: process.env.NODE_ENV === 'production', 
       sameSite: 'Strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, 
-      path: '/',  // Make sure the cookie is sent to the correct path
+      path: '/', 
   });
   console.log('Refresh token set:', refreshToken);
   return refreshToken;
