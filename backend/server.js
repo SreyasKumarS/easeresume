@@ -10,12 +10,18 @@ dotenv.config();
 
 const app = express();
 
-// CORS setup
-const corsOptions = {
-  origin: [process.env.FRONTEND_URL],  
-  credentials: true,              
-};
+// // CORS setup
+// const corsOptions = {
+//   origin: [process.env.FRONTEND_URL],  
+//   credentials: true,              
+// };
 
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
 app.use(cors(corsOptions));
 
@@ -30,6 +36,8 @@ import userRoutes from './routes/userRoutes.js';
 app.use('/users', userRoutes);
 // app.use('/', userRoutes); 
 app.post('/refresh-token',refreshAccessToken );
+
+
 
 // Database connection
 connectDB();
