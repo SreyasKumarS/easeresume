@@ -12,8 +12,8 @@ router.post('/resend-otp', userController.resendOtp);
 
 router.post('/Login', userController.login);
 router.post('/logout', userController.logout);
-// router.post('/forgot-password', userController.forgotPassword);
-// router.post('/reset-password', userController.resetPassword);
+router.post('/forgot-password', userController.forgotPassword);
+router.post('/reset-password', userController.resetPassword);
 
 router.post('/create-resumes', userController.createResume);
 router.get('/get-resumes', userController.getResumesByUser);

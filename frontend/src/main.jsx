@@ -12,7 +12,7 @@ import Register from './screens/registrationScreen';
 import Login from './screens/loginScreen';
 import Dashboard from './screens/resumeDashboard';
 import ResumePreviewPage from './components/ResumePreview';
-
+import ForgotPasswordPage from './screens/forgotPassword'
 
 
 
@@ -25,6 +25,7 @@ const router = createBrowserRouter(
         <Route path="Login" element={<Login  />} />
         <Route path="Dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="ResumePreview/:id" element={<ResumePreviewPage />} />
+        <Route path="ForgotPassword" element={<ForgotPasswordPage />} />
       </Route>
     </Route>
   )

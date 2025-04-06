@@ -67,7 +67,7 @@ const LoginPage = () => {
 
         <Row className="py-3">
           <Col>
-            <Link to="/users/ForgotPasswordScreen">Forgot Password?</Link>
+            <Link to="/users/ForgotPassword">Forgot Password?</Link>
           </Col>
         </Row>
 
@@ -82,7 +82,7 @@ const LoginPage = () => {
 
         <Row className="py-3">
           <Col>
-            Don’t have an account? <Link to="/users/RegisterScreen">Register</Link>
+            Don’t have an account? <Link to="/users/Register">Register</Link>
           </Col>
         </Row>
       </Form>

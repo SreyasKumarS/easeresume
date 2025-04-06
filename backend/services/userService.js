@@ -149,6 +149,51 @@ static async deleteResume(resumeId) {
     const deletedResume = await UserRepository.deleteResume(resumeId);
     return deletedResume;
 }
+
+
+static async sendPasswordResetOtp(email) {
+    try {
+        const user = await UserRepository.findByEmail(email);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
+
+        user.otp = otp;
+        user.otpExpires = otpExpires;
+
+        await UserRepository.update(user);
+        await sendEmail(email, 'Password Reset OTP', `Your OTP is ${otp}`);
+
+        return 'OTP sent to your email for password reset.';
+    } catch (error) {
+        console.error('Error in sendPasswordResetOtp:', error.message);
+        throw new Error(error.message || 'Failed to send password reset OTP');
+    }
+}
+
+static async resetPassword(email,newPassword) {
+    try {
+        const user = await UserRepository.findByEmail(email);
+
+        if (!user ) {
+            throw new Error('User not found');
+          }
+
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(newPassword, salt);
+          user.password = hashedPassword; 
+          await user.save();
+        
+    } catch (error) {
+        console.error('Error in resetPassword:', error.message);
+        throw new Error(error.message || 'Failed to reset password');
+    }
+}
+  
       
 
   }

@@ -146,6 +146,37 @@ async deleteResume(req, res) {
     }
   }
   
+  async forgotPassword(req, res) {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: 'Email is required' });
+    }
+
+    try {
+        const message = await UserService.sendPasswordResetOtp(email);
+        res.status(200).json({ message });
+    } catch (error) {
+        console.error('Error in forgotPassword:', error.message);
+        res.status(400).json({ message: error.message });
+    }
+}
+
+async resetPassword(req, res) {
+  const { email, newPassword, confirmPassword } = req.body;
+
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
+
+    try {
+        const message = await UserService.resetPassword(email,newPassword);
+        res.status(200).json({ message });
+    } catch (error) {
+        console.error('Error in resetPassword:', error.message);
+        res.status(400).json({ message: error.message });
+    }
+}
   
 
 }
