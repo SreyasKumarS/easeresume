@@ -15,10 +15,10 @@ router.post('/logout', userController.logout);
 router.post('/forgot-password', userController.forgotPassword);
 router.post('/reset-password', userController.resetPassword);
 
-router.post('/create-resumes', userController.createResume);
-router.get('/get-resumes', userController.getResumesByUser);
-router.put('/edit-resumes/:resumeId', userController.editResume);
-router.delete('/delete-resumes/:resumeId', userController.deleteResume);
+router.post('/create-resumes', authenticate,userController.createResume);
+router.get('/get-resumes', authenticate,userController.getResumesByUser);
+router.put('/edit-resumes/:resumeId', authenticate,userController.editResume);
+router.delete('/delete-resumes/:resumeId', authenticate,userController.deleteResume);
 
 
 
