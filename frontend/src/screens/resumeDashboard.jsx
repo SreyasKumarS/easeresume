@@ -5,6 +5,8 @@ import ResumeForm from '../components/resumeForm';
 import { useSelector} from 'react-redux';
 import {useNavigate } from 'react-router-dom';
 import api from '../axios';
+import ResumeIllustration from '../../src/assests/resume-apply-work-form-concept (1).jpg'
+import { Image } from 'react-bootstrap';
 
 const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
@@ -56,21 +58,36 @@ const Dashboard = () => {
   return (
     <Container fluid style={{ padding: '2rem', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
       
-      {/* Welcome Section */}
-      <Card className="mb-4 shadow-sm" style={{ background: '#ffffff', borderLeft: '5px solid #0d6efd' }}>
-        <Card.Body>
+      <Card className="mb-4 shadow-sm" style={{ background: '#ffffff' }}>
+    <Card.Body>
+      <Row className="align-items-center">
+        {/* Left Side - Text */}
+        <Col md={6}>
           <h3 style={{ fontWeight: '600', color: '#0d6efd' }}>
             Welcome, {user?.name?.split(' ')[0] || 'User'}!
           </h3>
           <p style={{ marginBottom: '1rem', color: '#6c757d' }}>
-            Build and manage your resumes efficiently and professionally.
+            <strong>EaseResume</strong> makes resume building simple, smart, and hassle-free. Create professional resumes in minutes.
           </p>
           <Button variant="primary" onClick={handleShow}>
             <FaPlusCircle className="me-2" />
             Build Resume
           </Button>
-        </Card.Body>
-      </Card>
+        </Col>
+
+        {/* Right Side - Image */}
+        <Col md={6} className="text-center">
+        <Image 
+            src={ResumeIllustration}
+            alt="Resume Illustration"
+            fluid
+            style={{ maxHeight: '300px' }}
+          />
+
+        </Col>
+      </Row>
+    </Card.Body>
+  </Card>
 
       {/* Resume Previews */}
       <h5 className="mb-3" style={{ fontWeight: '500' }}>Your Resumes</h5>
