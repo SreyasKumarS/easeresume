@@ -78,7 +78,7 @@ const ForgotPasswordPage = () => {
             await api.post('/users/resend-otp', { email });
             toast.success('OTP resent successfully!');
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Error in resending OTP');
+            toast.error(error.response?.data?.message || 'Error in resending OT');
         }
     };
     
