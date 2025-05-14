@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { toast } from 'react-toastify';
 import api from '../axios';
-import FormContainer from "../components/formContainer";
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -16,6 +15,7 @@ const RegisterScreen = () => {
   const [resendDisabled, setResendDisabled] = useState(true);
 
   const navigate = useNavigate();
+
   useEffect(() => {
     let interval = null;
     if (isOtpSent && resendDisabled) {
@@ -35,11 +35,8 @@ const RegisterScreen = () => {
   }, [timer, isOtpSent, resendDisabled]);
 
   const validateName = (name) => /^[A-Za-z\s]{3,}$/.test(name);
-  // const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
-  // const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password);
   const validateEmail = (email) => email.includes("@");
   const validatePassword = (password) => password.length >= 4;
-
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -50,7 +47,7 @@ const RegisterScreen = () => {
       } else if (!validateEmail(email)) {
         toast.error('Invalid email format.');
       } else if (!validatePassword(password)) {
-        toast.error('Password must be at least 6 characters, including 1 uppercase, 1 lowercase, and 1 number.');
+        toast.error('Password must be at least 4 characters.');
       } else if (password !== confirmPassword) {
         toast.error('Passwords do not match.');
       } else {
@@ -76,7 +73,6 @@ const RegisterScreen = () => {
       toast.error('Please enter the OTP.');
     }
   };
-  
 
   const resendOtpHandler = async () => {
     try {
@@ -89,88 +85,260 @@ const RegisterScreen = () => {
   };
 
   return (
-      <FormContainer>
-        <h1>{!isOtpSent ? 'Sign Up' : 'Enter OTP'}</h1>
-        <Form onSubmit={submitHandler}>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F9FAFB', // Match dashboard background
+        fontFamily: "'Inter', sans-serif", // Match dashboard font
+        padding: '20px',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '500px',
+          width: '100%',
+          padding: '40px',
+          background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(165, 180, 252, 0.1) 100%)', // Match login page gradient
+          borderRadius: '12px',
+        }}
+      >
+        <h1
+          style={{
+            fontSize: '24px',
+            fontWeight: '800', // Match dashboard h1 weight
+            color: '#1e293b', // Match dashboard heading color
+            marginBottom: '30px',
+            textAlign: 'center',
+          }}
+        >
+          {!isOtpSent ? 'Sign Up' : 'Enter OTP'}
+        </h1>
+
+        <Form>
           {!isOtpSent ? (
             <>
-              <Form.Group className="my-2" controlId='name'>
-                <Form.Label>Name</Form.Label>
+              <Form.Group controlId="name" style={{ marginBottom: '20px' }}>
+                <Form.Label style={{ color: '#1e293b', fontSize: '14px' }}>
+                  Name
+                </Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
+                  style={{
+                    padding: '12px',
+                    borderRadius: '25px',
+                    border: '1px solid #e2e8f0', // Match dashboard border color
+                    backgroundColor: '#FFF',
+                    fontSize: '14px',
+                    color: '#1e293b',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                  }}
                 />
               </Form.Group>
-              <Form.Group className="my-2" controlId='email'>
-                <Form.Label>Email Address</Form.Label>
+
+              <Form.Group controlId="email" style={{ marginBottom: '20px' }}>
+                <Form.Label style={{ color: '#1e293b', fontSize: '14px' }}>
+                  Email Address
+                </Form.Label>
                 <Form.Control
                   type="email"
-                  placeholder="Enter Email"
+                  placeholder="yourname@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  style={{
+                    padding: '12px',
+                    borderRadius: '25px',
+                    border: '1px solid #e2e8f0', // Match dashboard border color
+                    backgroundColor: '#FFF',
+                    fontSize: '14px',
+                    color: '#1e293b',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                  }}
                 />
               </Form.Group>
-              <Form.Group className="my-2" controlId='password'>
-                <Form.Label>Password</Form.Label>
+
+              <Form.Group controlId="password" style={{ marginBottom: '20px' }}>
+                <Form.Label style={{ color: '#1e293b', fontSize: '14px' }}>
+                  Password
+                </Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Enter Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  style={{
+                    padding: '12px',
+                    borderRadius: '25px',
+                    border: '1px solid #e2e8f0', // Match dashboard border color
+                    backgroundColor: '#FFF',
+                    fontSize: '14px',
+                    color: '#1e293b',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                  }}
                 />
               </Form.Group>
-              <Form.Group className="my-2" controlId='confirmPassword'>
-                <Form.Label>Confirm Password</Form.Label>
+
+              <Form.Group controlId="confirmPassword" style={{ marginBottom: '30px' }}>
+                <Form.Label style={{ color: '#1e293b', fontSize: '14px' }}>
+                  Confirm Password
+                </Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  style={{
+                    padding: '12px',
+                    borderRadius: '25px',
+                    border: '1px solid #e2e8f0', // Match dashboard border color
+                    backgroundColor: '#FFF',
+                    fontSize: '14px',
+                    color: '#1e293b',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                  }}
                 />
               </Form.Group>
-              <Button type="submit" variant="primary" className="mt-3"   disabled={isOtpSent ? resendDisabled : false}
+
+              <Button
+                onClick={submitHandler}
+                style={{
+                  width: '100%',
+                  background: 'linear-gradient(90deg, #14b8a6, #a5b4fc)', // Match login page main button
+                  border: 'none',
+                  color: '#FFF',
+                  fontWeight: '600',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  marginBottom: '20px',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-3px)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
+                }}
               >
-                {isOtpSent ? 'Verify OTP' : 'Send OTP'}
+                Send OTP
               </Button>
             </>
           ) : (
             <>
-              <Form.Group className="my-2" controlId='otp'>
-                <Form.Label>OTP</Form.Label>
+              <Form.Group controlId="otp" style={{ marginBottom: '20px' }}>
+                <Form.Label style={{ color: '#1e293b', fontSize: '14px' }}>
+                  OTP
+                </Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter OTP"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   required
+                  style={{
+                    padding: '12px',
+                    borderRadius: '25px',
+                    border: '1px solid #e2e8f0', // Match dashboard border color
+                    backgroundColor: '#FFF',
+                    fontSize: '14px',
+                    color: '#1e293b',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                  }}
                 />
               </Form.Group>
+
               <Row className="py-3">
                 <Col>
-                  <Button type="button" variant="link" onClick={resendOtpHandler} disabled={isOtpSent ? resendDisabled : false}>
+                  <Button
+                    onClick={resendOtpHandler}
+                    disabled={resendDisabled}
+                    style={{
+                      color: resendDisabled ? '#475569' : '#14b8a6', // Match dashboard colors
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      background: 'none',
+                      border: 'none',
+                      padding: 0,
+                    }}
+                  >
                     Resend OTP {resendDisabled ? `(${timer})` : ''}
                   </Button>
                 </Col>
               </Row>
-              <Button type="submit" variant="primary" className="mt-3">
-                {isOtpSent ? 'Verify OTP' : 'Send OTP'}
+
+              <Button
+                onClick={submitHandler}
+                style={{
+                  width: '100%',
+                  background: 'linear-gradient(90deg, #14b8a6, #a5b4fc)', // Match login page main button
+                  border: 'none',
+                  color: '#FFF',
+                  fontWeight: '600',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  marginBottom: '20px',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-3px)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
+                }}
+              >
+                Verify OTP
               </Button>
             </>
           )}
+
+          {/* Social Login Buttons */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '20px',
+            }}
+          >
+          </div>
+
+          {/* Login Link */}
+          <Row>
+            <Col
+              style={{
+                textAlign: 'center',
+                fontSize: '12px',
+                color: '#475569', // Match login page secondary text
+              }}
+            >
+              Already have an account?{' '}
+              <Link
+                to="/users/Login"
+                style={{
+                  color: '#14b8a6', // Match login page link color
+                  textDecoration: 'underline',
+                }}
+              >
+                Login
+              </Link>
+            </Col>
+          </Row>
+
+          <hr style={{ borderColor: '#e2e8f0', margin: '20px 0' }} />
         </Form>
-        <Row className="py-3">
-          <Col>
-            Already have an account? <Link to="/users/Login">Login</Link>
-          </Col>
-        </Row>
-        <hr />
-      </FormContainer>
+      </div>
+    </div>
   );
 };
 

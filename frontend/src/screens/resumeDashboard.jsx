@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
-import { FaPlusCircle, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlusCircle, FaEdit, FaTrash, FaEye, FaFilePdf } from 'react-icons/fa';
 import ResumeForm from '../components/resumeForm';
-import { useSelector} from 'react-redux';
-import {useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import api from '../axios';
-import ResumeIllustration from '../../src/assests/resume-apply-work-form-concept (1).jpg'
+import ResumeIllustration from "../../src/assests/resume-apply-work-form-concept (1).jpg";
 import { Image } from 'react-bootstrap';
+import './Dashboard.css'; // Create this CSS file for custom styles
 
 const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const [selectedResume, setSelectedResume] = useState(null);
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+
   const handleShow = () => {
     setSelectedResume(null);
     setShowForm(true);
@@ -56,189 +58,183 @@ const Dashboard = () => {
   }, [user]);
 
   return (
-    <Container fluid style={{ padding: '2rem', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-      
-      <Card className="mb-4 shadow-sm" style={{ background: '#ffffff' }}>
-    <Card.Body>
-      <Row className="align-items-center">
-        {/* Left Side - Text */}
-        <Col md={6}>
-          <h3 style={{ fontWeight: '600', color: '#0d6efd' }}>
-            Welcome, {user?.name?.split(' ')[0] || 'User'}!
-          </h3>
-          <p style={{ marginBottom: '1rem', color: '#6c757d' }}>
-            <strong>EaseResume</strong> makes resume building simple, smart, and hassle-free. Create professional resumes in minutes.
-          </p>
-          <Button variant="primary" onClick={handleShow}>
-            <FaPlusCircle className="me-2" />
-            Build Resume
-          </Button>
-        </Col>
-
-        {/* Right Side - Image */}
-        <Col md={6} className="text-center">
-        <Image 
-            src={ResumeIllustration}
-            alt="Resume Illustration"
-            fluid
-            style={{ maxHeight: '300px' }}
-          />
-
-        </Col>
-      </Row>
-    </Card.Body>
-  </Card>
-
-      {/* Resume Previews */}
-      <h5 className="mb-3" style={{ fontWeight: '500' }}>Your Resumes</h5>
-      <Row>
-        {resumes.length === 0 ? (
-          <Col>
-            <p className="text-muted">No resumes yet. Click "Build Resume" to get started!</p>
+    <Container fluid className="dashboard-container">
+      {/* Hero Section */}
+      <section className="dashboard-hero">
+        <Row className="align-items-center">
+          <Col md={6} className="hero-content">
+            <h1>Welcome back, {user?.name?.split(' ')[0] || 'User'}!</h1>
+            <p className="subtitle">
+              Craft your perfect resume with <strong>EaseResume</strong> - the smart way to showcase your professional journey.
+            </p>
+            <div className="cta-buttons">
+              <Button variant="primary" onClick={handleShow} className="main-cta">
+                <FaPlusCircle className="me-2" />
+                Create New Resume
+              </Button>
+              <Button variant="outline-primary" onClick={() => navigate('/templates')}>
+                Browse Templates
+              </Button>
+            </div>
           </Col>
+          <Col md={6} className="hero-image">
+            <Image 
+              src={ResumeIllustration}
+              alt="Resume creation illustration"
+              fluid
+              className="illustration-img"
+            />
+          </Col>
+        </Row>
+      </section>
+
+      {/* Stats Section */}
+      <section className="dashboard-stats">
+        <Row>
+          <Col md={4}>
+            <Card className="stat-card">
+              <Card.Body>
+                <h3>{resumes.length}</h3>
+                <p>Resumes Created</p>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="stat-card">
+              <Card.Body>
+                <h3>{resumes.filter(r => r.isDefault).length}</h3>
+                <p>Primary Resumes</p>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="stat-card">
+              <Card.Body>
+                <h3>0</h3>
+                <p>Downloads This Month</p>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </section>
+
+      <section className="resumes-section">
+        {resumes.length === 0 ? (
+          <Card className="empty-state">
+            <Card.Body>
+              <Image src="/empty-resumes.svg" className="empty-icon" />
+              <h4>No resumes yet</h4>
+              <p>Get started by creating your first professional resume</p>
+              <Button variant="primary" onClick={handleShow}>
+                <FaPlusCircle className="me-2" />
+                Build Resume
+              </Button>
+            </Card.Body>
+          </Card>
         ) : (
-          resumes.map((resume) => (
-            <Col md={6} lg={4} key={resume._id} className="mb-4">
-<Card
-  className="shadow-sm"
-  style={{
-    padding: '0.6rem',
-    marginBottom: '1rem',
-    borderLeft: '4px solid #0d6efd',
-    fontSize: '0.7rem',
-    width: '300px',
-    minHeight: 'fit-content',
-    backgroundColor: '#f8f9fa',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  }}
->
-  <div>
-    <h7 style={{ color: '#0d6efd', marginBottom: '0.2rem' }}>{resume.jobTitle}</h7>
-    <h6 style={{ color: '#0d6efd', marginBottom: '0.2rem' }}>{resume.fullName}</h6>
-    <p style={{ margin: '0 0 0.2rem', color: '#555' }}>{resume.email} | {resume.phone}</p>
-
-    <strong>Summary:</strong>
-    <p>{resume.summary}</p>
-
-    <strong>Skills:</strong>
-    <p>{resume.skills?.[0]}</p>
-
-    <strong>Experience:</strong>
-    {resume.experience?.map((exp, idx) => (
-      <div key={idx}>
-        <p><strong>{exp.role}</strong> at <strong>{exp.company}</strong></p>
-        <p>Duration: {exp.duration} years</p>
-        <p>{exp.description}</p>
-      </div>
-    ))}
-
-    <strong>Education:</strong>
-    {resume.education?.map((edu, idx) => (
-      <p key={idx}>
-        {edu.degree} - {edu.institution} ({edu.year})
-      </p>
-    ))}
-
-    {resume.achievements?.length > 0 && (
-      <>
-        <strong>Achievements:</strong>
-        <ul style={{ paddingLeft: '1.2rem' }}>
-          {resume.achievements.map((a, i) => (
-            <li key={i}>{a}</li>
-          ))}
-        </ul>
-      </>
-    )}
-
-    {resume.certifications?.length > 0 && (
-      <>
-        <strong>Certifications:</strong>
-        <ul style={{ paddingLeft: '1.2rem' }}>
-          {resume.certifications.map((c, i) => (
-            <li key={i}>{c}</li>
-          ))}
-        </ul>
-      </>
-    )}
-
-    {resume.links?.linkedin || resume.links?.portfolio ? (
-      <>
-        <strong>Links:</strong>
-        <ul style={{ paddingLeft: '1.2rem' }}>
-          {resume.links?.linkedin && <li>LinkedIn: {resume.links.linkedin}</li>}
-          {resume.links?.portfolio && <li>Portfolio: {resume.links.portfolio}</li>}
-        </ul>
-      </>
-    ) : null}
-  </div>
-  <div style={{ 
-  display: 'flex', 
-  justifyContent: 'flex-end', 
-  marginTop: '0.75rem', 
-  gap: '0.5rem' 
-}}>
-  <Button
-    variant="light"
-    size="sm"
-    style={{
-      border: '1px solid #ced4da',
-      color: '#0d6efd',
-      fontWeight: '500',
-      backgroundColor: '#fff'
-    }}
-    onClick={() => handleEdit(resume)}
-  >
-    <FaEdit style={{ marginRight: '4px' }} />
-    Edit
-  </Button>
-
-  <Button
-    variant="light"
-    size="sm"
-    style={{
-      border: '1px solid #ced4da',
-      color: '#dc3545',
-      fontWeight: '500',
-      backgroundColor: '#fff'
-    }}
-    onClick={() => handleDelete(resume._id)}
-  >
-    <FaTrash style={{ marginRight: '4px' }} />
-    Delete
-  </Button>
-
-  <Button
-    variant="light"
-    size="sm"
-    style={{
-      border: '1px solid #ced4da',
-      color: '#198754',
-      fontWeight: '500',
-      backgroundColor: '#fff'
-    }}
-    onClick={() =>
-      navigate(`/users/ResumePreview/${resume._id}`, {
-        state: { formData: resume }
-      })
-    }
-  >
-    Preview
-  </Button>
-</div>
-
-
-</Card>
-</Col>
-  ))
-)}
-</Row>
+          <Row className="resume-grid">
+            {resumes.map((resume) => (
+              <Col xl={3} lg={4} md={6} key={resume._id}>
+                <Card className="resume-card">
+                  <div className="resume-thumbnail">
+                    {/* Placeholder for resume thumbnail image */}
+                    <div className="thumbnail-placeholder">
+                      {resume.jobTitle?.charAt(0) || 'R'}
+                    </div>
+                  </div>
+                  <Card.Body>
+                    <h5 className="resume-title">{resume.jobTitle || 'Untitled Resume'}</h5>
+                    <p className="resume-meta">
+                      Last updated: {new Date(resume.updatedAt).toLocaleDateString()}
+                    </p>
+                    <div className="resume-actions">
+                      <Button
+                        onClick={() => navigate(`/users/ResumePreview/${resume._id}`, { state: { formData: resume } })}
+                        style={{
+                          background: 'linear-gradient(90deg, #14b8a6, #a5b4fc)', // Match dashboard gradient
+                          border: 'none',
+                          color: '#FFF',
+                          fontSize: '0.85rem',
+                          padding: '6px 12px',
+                          borderRadius: '6px',
+                          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '8px',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.transform = 'translateY(-2px)';
+                          e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.transform = 'translateY(0)';
+                          e.target.style.boxShadow = 'none';
+                        }}
+                      >
+                        <FaEye style={{ marginRight: '4px' }} /> Preview
+                      </Button>
+                      <Button
+                        onClick={() => handleEdit(resume)}
+                        style={{
+                          backgroundColor: '#E2E8F0', // Subtle gray background
+                          border: 'none',
+                          color: '#64748b', // Match dashboard secondary text
+                          fontSize: '0.85rem',
+                          padding: '6px 12px',
+                          borderRadius: '6px',
+                          transition: 'background-color 0.2s ease, transform 0.2s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '8px',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = '#CBD5E1';
+                          e.target.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = '#E2E8F0';
+                          e.target.style.transform = 'translateY(0)';
+                        }}
+                      >
+                        <FaEdit style={{ marginRight: '4px', color: '#64748b' }} /> Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(resume._id)}
+                        style={{
+                          backgroundColor: '#FEE2E2', // Soft red background
+                          border: 'none',
+                          color: '#EF4444', // Match dashboard danger color
+                          fontSize: '0.85rem',
+                          padding: '6px 12px',
+                          borderRadius: '6px',
+                          transition: 'background-color 0.2s ease, transform 0.2s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = '#FECACA';
+                          e.target.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = '#FEE2E2';
+                          e.target.style.transform = 'translateY(0)';
+                        }}
+                      >
+                        <FaTrash style={{ marginRight: '4px', color: '#EF4444' }} /> Delete
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
+      </section>
 
       {/* Resume Form Modal */}
-      <Modal show={showForm} onHide={handleClose} size="lg">
+      <Modal show={showForm} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton>
-          <Modal.Title>{selectedResume ? 'Edit Resume' : 'Build Resume'}</Modal.Title>
+          <Modal.Title>{selectedResume ? 'Edit Resume' : 'Create New Resume'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ResumeForm
@@ -255,4 +251,10 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+
+
 
